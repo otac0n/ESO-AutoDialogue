@@ -109,7 +109,7 @@ function AutoDialogue:AutoSelect()
     local matches = self:SearchDialogue()
     if #matches == 1 then
         local option = INTERACTION.optionControls[matches[1]];
-        d("Selection option "..option:GetText())
+        d("Selection option "..tostring(matches[1])..": "..option:GetText())
         INTERACTION:HandleChatterOptionClicked(option)
     end
 end
@@ -143,6 +143,9 @@ function AutoDialogue:SearchDialogue()
             dialogueInfo.response = INTERACTION.optionControls[i]:GetText()
             if compiledRules(dialogueInfo) then
                 table.insert(matches, i)
+                d("Matched option "..tostring(i))
+            else
+                d("No match option "..tostring(i))
             end
         end
     end
