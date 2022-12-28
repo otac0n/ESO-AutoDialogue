@@ -1,0 +1,8 @@
+## Title: AutoDialogue
+## APIVersion: 101036
+## Version: 1.0
+## Author: otac0n
+## Description: Enable automatic "Goodbye." in many situations.
+## OptionalDependsOn:
+
+AutoDialogue.lua
