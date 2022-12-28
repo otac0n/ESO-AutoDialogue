@@ -47,14 +47,15 @@ local function compile(rules, keysMatched)
             fn = compile(rules["rules"], newKeysMatched)
         end
 
-        if not hasRules and not (newKeysMatched["response"] and keyCount >= 2) then
+        local byItemCount = ((newKeysMatched["response"] and 1) or 0) + ((newKeysMatched["index"] and 1) or 0)
+        if not hasRules and not (byItemCount > 0 and keyCount > byItemCount) then
             d("Not permitting a rule with only the following keys:")
             d(newKeysMatched)
             fn = function(...) return false end
         else
             for key, matcher in pairs(rules) do
                 if key ~= "rules" then
-                    if type(matcher) == "string" then
+                    if type(matcher) ~= "function" then
                         matcher = eq(matcher)
                     end
                     local ruleFn = function(dialogueInfo) return matcher(dialogueInfo[key]) end
@@ -323,25 +324,43 @@ function AutoDialogue:AutoSelect()
     local matches = self:SearchDialogue()
     if #matches == 1 then
         local option = INTERACTION.optionControls[matches[1]];
-        d("Selection option "..option:GetText())
+        d("Selection option "..tostring(matches[1])..": "..option:GetText())
         INTERACTION:HandleChatterOptionClicked(option)
     end
+end
+
+function AutoDialogue:GetOptionCount()
+    local optionCount = 0
+    if SCENE_MANAGER.currentScene.name == INTERACTION.sceneName then
+        for i = 1, MAX_CHATTER_OPTIONS do
+            if INTERACTION.optionControls[i]:IsControlHidden() then
+                break
+            end
+            optionCount = i
+        end
+    end
+    return optionCount
 end
 
 function AutoDialogue:SearchDialogue()
     local matches = {}
 
-    if SCENE_MANAGER.currentScene.name == INTERACTION.sceneName then
+    local optionCount = self:GetOptionCount()
+    if optionCount > 0 then
         local dialogueInfo = {
             target = GetUnitName("interact"),
             body = ZO_InteractWindowTargetAreaBodyText:GetText(),
         }
 
         local lastMatch, matchCount = nil, 0
-        for i = 1, INTERACTION.optionCount do
+        for i = 1, optionCount do
+            dialogueInfo.index = i
             dialogueInfo.response = INTERACTION.optionControls[i]:GetText()
             if compiledRules(dialogueInfo) then
                 table.insert(matches, i)
+                d("Matched option "..tostring(i))
+            else
+                d("No match option "..tostring(i))
             end
         end
     end
