@@ -87,6 +87,89 @@ local function compile(rules, keysMatched)
 end
 
 local rules = {
+    {
+        target = "Remains-Silent",
+        rules = {
+            { response = "Have any poisons or potions today?" },
+        },
+    },
+    {
+        target = "Marked for Death",
+        rules = {
+            { response = "<Page through the book.>" },
+            {
+                response = "Goodbye.",
+                rules = {
+                    { body = s("throw me to the swamp") },
+                    { body = s("My kin") },
+                    { body = s("My spouse") },
+                    { body = s("My ex-lover") },
+                    { body = s("my rival") },
+                    { body = s("My enemy") },
+                    { body = s("My prey") },
+                    { body = s("my vengance") },
+                    { body = s("a well-connected competitor") },
+                    { body = s("a camp follower") },
+                    { body = s("Foreign petitioners") },
+                    { body = s("sycophant") },
+                    { body = s("a spy") },
+                    { body = s("an eavesdropper") },
+                    { body = s("a criminal") },
+                    { body = s("their ringleader") },
+                    { body = s("the troublemaker") },
+                    { body = s("An agitator") },
+                    { body = s("a loudmouth") },
+                    { body = s("an insipid fool") },
+                    { body = s("the playful idiot") },
+                    { body = s("a skald in training") },
+                    { body = s("the real vermin") },
+                    { body = s("one of these vermin") },
+                    { body = s("One of the refugees") },
+                    { body = s("some lowly cur") },
+                    { body = s("a welcher") },
+                    { body = s("A coward") },
+                    { body = s("the pretender") },
+                    { body = s("a deadbeat") },
+                    { body = s("slaughterfish bait") },
+                    { body = s("a former customer") },
+                    { body = s("one of the staff") },
+                    { body = s("an employee") },
+                    { body = s("the worker") },
+                    { body = s("someone at the") },
+                    { body = s("An assassination") },
+                    { body = s("one of her friends") },
+                    { body = s("an innocent") },
+                    { body = s("a worshiper") },
+                    { body = s("A lone traveler") },
+                    { body = s("a spark to ignite") },
+                },
+            },
+            {
+                response = "<Accept this contract.>",
+                rules = {
+                    { body = s("citizens in") },
+                    { body = s("citizens of") },
+                    { body = s("anyone fool enough") },
+                    { body = s("those who claim it") },
+                    { body = s("Trim the branches") },
+                    { body = s("Strike terror into the populace") },
+                    { body = s("Keep the shadow of death lingering") },
+                    { body = s("make the March too frightening") },
+                },
+            },
+        },
+    },
+    {
+        target = "Speaker Terenus",
+        rules = {
+            { response = "Do you have anything for me today, Speaker?" },
+            { response = "Who do I need to kill?" },
+            {
+                body = s("Two challenges."),
+                response = "I'm listening."
+            },
+        },
+    },
 }
 
 local compiledRules = compile(rules)
